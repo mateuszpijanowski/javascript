@@ -1,18 +1,30 @@
+# Spis treści
+
+- [TYPY](#typy)
+  - [Określania typów](#określanie-typów-danych)
+- [ZMIENNE](#zmienne)
+  - [var](#var)
+  - [let](#let)
+  - [const](#const)
+- [FUNKCJE](#funkcje)
+  - [syntax function](#deklaracja-po-przez-syntax-function)
+  - [funkcje strzałkowe](#deklaracja-funkcji-strzałkowej)
+
 # Typy
 
-Realnie każda wartość w javascript (oprócz `null` i `undefined`) jest obiektem (posiada własne metody, prototypy i relacje). Dzieje sie tak dzięki wykorzystaniu określonych konstruktorów w procesie deklaracji określonej wartości. 
+Realnie każda wartość w JavaScript (oprócz `null` i `undefined`) jest obiektem (posiada własne metody, prototypy i relacje). Dzieje się tak dzięki wykorzystaniu określonych konstruktorów w procesie deklaracji wartości. 
 
-W celu ułatwienia (a wrecz umożwliwienia) działania na danych i ich odróżniania javascript oferuje nam określone metody i operatory zwracające lub wskazujące bardziej szczegółowe typy danych do których należą:
+W celu ułatwienia (a wrecz umożliwienia) działania na danych i ich odróżniania JavaScript oferuje nam określone metody i operatory zwracające lub wskazujące bardziej szczegółowe typy danych, do których należą:
 
 - `Boolean` -> true oraz false.
 - `null` -> specjalne słowo kluczowe oznaczające wartość zerową. Ponieważ w języku JavaScript rozróżniana jest wielkość liter, null nie jest tym samym co Null, NULL lub jakikolwiek inny wariant.
 - `undefined` -> Wartość nieokreślona.
 - `Number` -> np. 42 lub 3.14159.
-- `String` - np. "elo"
+- `String` - np. "elo".
 - `Symbol` (nowość w ECMAScript 6) -> Typ danych, gdzie przykłady są niepowtarzalne i niezmienne.
-- `Object` -> obikety i podtypy (funkcje i tablice)
+- `Object` -> obikety i podtypy (funkcje i tablice).
 
-Gdzie `Object` to typ złożony, pozostałe typy to tzn. typy prymitowne (nie rozkładjące się na podtypy).
+Gdzie `Object` to typ złożony, pozostałe typy to tzn. typy prymitywne (nie rozkładjące się na podtypy).
 
 ## Określanie typów danych
 
@@ -22,18 +34,18 @@ const elo = 'test'
 typeof elo // String
 ```
 
-- `Array.isArray([wartość])` -> zwracająca informacje o tym czy wskzana wartość jest tablicą (rozróznianie typu złożonego). Przykład:
+- `Array.isArray([wartość])` -> metoda zwracająca informacje o tym czy wskzana wartość jest tablicą (rozróznianie typu złożonego). Przykład:
 ```
 const elo = []
 Array.isArray(elo) // true
 ```
 
-- `[wartość] instanceof [Konstruktor]` -> testowanko czy określona wartość została 'wytowrzona' z użyciem wskazanego konstruktora (umożliwia określnaie typu funkcji. Przykład:
+- `[wartość] instanceof [Konstruktor]` -> testowanko czy określona wartość została 'wytowrzona' z użyciem wskazanego konstruktora (umożliwia określnaie typu funkcji). Przykład:
 ```
 function elo() {}
 console.log(elo instanceof Function) // true
 ```
-\*Domyślnie wszystkie funkcje są tworzone z wykorzystaniem konstruktora Function (analogicznia to wygląda dla danych typów np. String(), Number() itd.)
+\*Domyślnie wszystkie funkcje są tworzone z wykorzystaniem konstruktora ``Function`` (analogicznia to wygląda dla danych typów np. ``String()``, ``Number()`` itd.)
 
 # Zmienne
 

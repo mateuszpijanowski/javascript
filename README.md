@@ -8,13 +8,16 @@ W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybran
   - [Określanie typów](#określanie-typów-danych)
 - [ZMIENNE](#zmienne)
   - [var](#var)
+    - [Zakres funkcyjny](#scoping-zakres-funkcyjny)
+    - [Hoisting](#hoisting-opis)
   - [let](#let)
+    - [Zakres blokowy](#scoping-zakres-blokowy)
   - [const](#const)
 - [FUNKCJE](#funkcje)
   - [syntax function](#deklaracja-po-przez-syntax-function)
   - [funkcje strzałkowe](#deklaracja-funkcji-strzałkowej)
   - [this](#obiekt-this)
-    - [use strict](#use-strict)
+    - ['use strict'](#use-strict)
     - [Funkcje strzałkowe](#funkcje-strzałkowe)
     - [call(), apply(), bind()](#call-apply-bind)
       - [call()](#call)
@@ -70,7 +73,7 @@ Podstawowa deklaracja zmiennej podlegająca modyfikacją.
 
 ### Cechy charakterystyczne:
 
-#### Scoping
+#### Scoping (zakres funkcyjny)
 `var` posiada zakres funkcyjny przez co dostep do niego mamy w każdym miejscu wewnątrz funkcji. Przykład:
 
 ```
@@ -83,7 +86,7 @@ function elo() {
 }
 ```
 
-#### Hoisting
+#### Hoisting (opis)
 `var` podlega hoistingow co oznacza że kompilator js'a zanim zadeklaruje jej ostateczą wartość wskazaną w kodzie, utworzy zmienną z wartością `undefined`. Przykład:
 
 ```
@@ -114,7 +117,7 @@ Deklaracja zaminnej podlegającej modyfikacją dodana w ES6.
 
 ### Cechy charakterystyczne:
 
-#### Scoping
+#### Scoping (zakres blokowy)
 `let` posiada zakres blokowy przez co dostep do niego mamy tylko wewnątrz określonego bloku (`{}`). Przykład:
 
 ```
@@ -232,7 +235,7 @@ a() // window object
 
 Dzieje się tak ponieważ wywłanie ``a()`` w globalnym kontekście to nic innego jak ``window.a()``.
 
-## use strict
+## 'use strict'
 
 Spójrzmy na taki przykład:
 

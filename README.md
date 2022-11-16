@@ -1,3 +1,7 @@
+**JavaScript** jak każdy inny język progrmowania to spory kawał wiedzy, definicji, sformuowań i logiki (lub jej braku). Wiedza ta lubi szybko wypadać z głowy i być niespodziewanie potrzebna (np. przed rozmową rekrutacyjną) lub gdy rzeczywiście zamiast grać w gierki musimy w pracy zrobić jakiegoś taska i odpalić zakurzonego ŁepStorma czy innego VS kota. 
+
+W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybrane obszary informacji dotyczących funkcjonalości i logiki wspaniałego języka jakim jest JS! (lub przypomnieć nam dlaczego jest on aż tak dziwny (a jest dziwny)). **Miłej zabawy!**
+
 # Spis treści
 
 - [TYPY](#typy)
@@ -409,6 +413,8 @@ healArcher() // 80
 console.log(archer) // [...] health: 80, [...]
 ```
 # Klasy (OOP)
+
+# Metody
 
 # Programowanie funkcyjne (FP)
 

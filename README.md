@@ -9,6 +9,13 @@
 - [FUNKCJE](#funkcje)
   - [syntax function](#deklaracja-po-przez-syntax-function)
   - [funkcje strzałkowe](#deklaracja-funkcji-strzałkowej)
+  - [this](#obiekt-this)
+    - [use strict](#use-strict)
+    - [Funkcje strzałkowe](#funkcje-strzałkowe)
+    - [call, apply, bind](#call-apply-bind)
+      - [call](#call)
+      - [apply](#apply)
+      - [bind](#bind)
 
 # Typy
 
@@ -158,7 +165,7 @@ Tak zadeklarowana funkcja posiada charakterystykę deklaracji zmiennej ``var``.
 #### Posiadane wartości i cechy
 - this -> referencja do obiektu w którym wskazana funkcja została wykonana (domyślnie będzie to globalny obiekt window)
 - call -> body funkcji
-- arguments -> lista argumantów funkcji w postaci tablico-podobnego obiektu
+- arguments -> lista argumantów funkcji w postaci **tablico-podobnego** obiektu
 - name -> nazwa funkcji
 - lenght -> liczba oczekiwanych argumentów
 - caller -> wskazanie fn nadrzędnej (tej wewnątrz której została wykonana nasza funkcja)
@@ -183,3 +190,216 @@ Przykład:
 \* Funkcja strzałkowa posiada cechy zwykłej funkcji rozszerzonej o działanie syntax'u `'use strict'`.
 
 ## Obiekt this
+
+Zacznijmy od definicji `this` - jest to referencja do okiektu w kotekście którego została wykonana funkcja wewnątrz której używamy `this`. Początkowo może nie brzmieć to zbyt jasno ale proste przykłady powinny rozwiać wszelkie wątpliwości.
+
+obj.someFn(this) -> this w tym przypadku zwróci nam `obj`
+
+Spójrzmy na bardziej rozbudowany przykład:
+
+```
+const obj = {
+  name: 'Adam',
+  age: 20,
+  getData() {
+    return `${this.name} ma ${this.age} lat.`
+  },
+}
+
+obj.getData() // Adam ma 20 lat.
+```
+
+Ten prosty przykład powienien dokładnie zobrazować co dokładnie zwraca nam obkiet `this` i jakie daje nam możliwości.
+
+Domyślnie `this` w wskazuje nam obiekt window (zakładając że mówimy o webowym wykorzystaniu JS'a) -> this === widnow // true
+
+```
+function a() {
+  return this
+}
+
+a() // window object
+```
+
+Dzieje się tak ponieważ wywłanie ``a()`` w globalnym kontekście to nic innego jak ``window.a()``.
+
+## use strict
+
+Spójrzmy na taki przykład:
+
+```
+const obj = {
+  name: 'Adam',
+  age: 20,
+  getData() {
+    var getName = function() {
+      return this.name
+    }
+    return `${getName()} ma ${this.age} lat.`
+  }
+}
+
+obj.getData() // undefined ma 20 lat.
+```
+
+Mamy tutaj pewien problem, mianowicie chcielibyśmy aby nasza funkcja zwróciła nam to samo co funkcja z wcześniejszego przykładu, jednak zamiast zwrotki 'Adam' z funkcji `getName` otrzymujemy `undefined`. Dlaczego tak się dzieje? Spójrzmy dokładniej na kontekst wykonania funkcji `getName`.
+
+```
+return `${getName()} ma ${this.age} lat.`
+```
+
+Jak możemy zauważyć przed nazwą funkcji nie mamy nic, więc kierując się wcześniejszymi informacjami może założyć że `getName()` to inaczej `window.getName()` i rzeczywiście to jest przyczyna naszego problemu. Miejsce wykonania funkcji nie ma w tym przypadku żadnego znaczenia liczy się referencja do obiektu nadrzędnego. Tutaj nie mam takiej referencji więc domyśnie `this` zwraca nam obiekt `window`, a obiekt `window` nie posiada wartości `name`.
+
+Chyba możemy się zgodzić że nie jest to rozwiązanie zbyt intuicyjne. W związku z tym kolejne wersje JS'a otrzymały możliwość rozwiązania tego problemu dzięki wykorzystaniu syntax'a 'use strict' deklarowanego na początku funkcji lub skryptu. Spójrzmy co się stanie gdy użyjemy tej wartości.
+
+```
+const obj = {
+  name: 'Adam',
+  age: 20,
+  getData() {
+    'use strict'
+    var getName = function() {
+      return this.name // Cannot read properties of undefined (reading 'name') 
+    }
+    return `${getName()} ma ${this.age} lat.`
+  }
+}
+
+obj.getData()
+```
+
+Wykonanie naszego kodu skończy się na błędzie "Cannot read properties of undefined (reading 'name')". Dzieje się tak ponieważ 'use strict' zapobiega przypiswaniu obiektu this domyślnej wartości `window` i tym samym wymaga od nas wykorzystywania `this` tylko w odpowiednim kontekście, które zawiera referencje do obiektu nadrzędnego.
+
+## Funkcje strzałkowe
+
+'use strict' nie rozwiązuje jednak naszego problemu. Celem naszej funkcji jest zwrócenie tesktu "Adam ma 20 lat.", a nie rzucenie błędem mówiącym nam że nie umiemy w kolorowe literki. Ostatecznym rozwiązaniem tego problemu są funkcje strzałkowe wprowadzone w wersji ES6. W opisie funkcji strzałkowej możemy przeczytać:
+
+```
+- brak własnego obiektu this -> zawsze jest to referencja do nadrzędnego `this`
+```
+
+Dzięki tej definicji możemy przerobić nasz przykład, tak by wreszcie zwracam nam to czego potrzebujemy:
+
+```
+const obj = {
+  name: 'Adam',
+  age: 20,
+  getData() {
+    const getName = () => {
+      return this.name
+    }
+    return `${getName()} ma ${this.age} lat.`
+  }
+}
+
+console.log(obj.getData()) // Adam ma 20 lat.
+```
+
+I vuala nasz kod wreszcie robi to czego od początku oczekiwaliśmy. Warto w tym miejscu pamiętać, o tym że wykorzystanie funkcji strzałkowej a zwykłej deklaracji powinno być kontekstowe (to nie tak że funkcja strzałkowa jest najlepsza i tylko jej używamy). 
+Kluczem jest tutaj wiedza czym te deklaracje się różnią i którą z nich użyć w danym przypadku.
+
+```
+const obj = {
+  name: 'Adam',
+  age: 20,
+  getData: () => { // EJ! Jeżeli pozbawimy tę funkcję własnego kontekstu this to przecież this wewnątrz tej funkcjie nie wskaże nam obiektu obj tylko nadrzędny obiekt this którym w tym przypadku będzie window!
+    const getName = () => {
+      return this.name
+    }
+    return `${getName()} ma ${this.age} lat.`
+  }
+}
+
+console.log(obj.getData()) // undefined ma undefined lat.
+```
+
+No dobra a co jeżeli chcemy "narzucić" danej funkcji określony obiekt `this`?
+
+## call(), apply(), bind()
+
+Wbudowane w funkcje metody `call()`, `apply()`, `bind()` umożliwiają nam manipulowanie wartością obiektu `this` wewnątrz wskazanych funkcji.
+
+### call()
+
+Zacznijmy od przykładu:
+
+```
+const wizard = {
+  name: 'Merlin',
+  health: 50,
+  heal() {
+    return this.health = 100
+  }
+}
+
+wizard.heal() // 100
+console.log(wizard) // [...] health: 100, [...]
+```
+
+Prosty przykła, który prezentuje nam wykorzystanie this do zmiany wartości określonego pola w obiekcie. Co jednak jeżeli dorzucimy kolejną postać (obiekt) do naszej gry która sama nie posiada funkcji heal(), ale chciała by skorzystać z tej umiejętności naszego maga? Tutaj z pomocą przychodzi nam metoda `call()`.
+
+```
+const wizard = {
+  name: 'Merlin',
+  health: 50,
+  heal() {
+    return this.health = 100
+  }
+}
+
+const archer = {
+  name: 'Robin Hood',
+  health: 30,
+}
+
+wizard.heal.call(archer) // 100
+console.log(archer) // [...] health: 100, [...]
+```
+
+Ciekawe prawda? **Call** umożliwia nam wykonanie wskazanej funkcji ze zmienionym obiektem `this` na to, co przekażemy w jej argumencie. Dzięki temu jesteśmy w stanie wykorzystywać zdolność (funkcję) jednej postaci (obiektu) na drugiej postaci (drugim obiekcie z innymi danymi bez pierwotnej funkcji).
+
+No dobra a co jeżeli nasza funkcja `heal()` wyglądała by tak:
+
+```
+heal(hp) {
+  return this.health += hp
+}
+```
+
+W jaki sposób terz możemy ją wykorzystać w innym obiekcie przy jednoczesnym przekazaniu wartości argumentu `hp`?
+
+```
+wizard.heal.call(archer, 50) // 80
+console.log(archer) // [...] health: 80, [...]
+```
+
+I oczywiście działa to analogicznie z kolejnymi argumentami (wystarczy wymieniać je po przecinku przy zachowaniu zasady -> pierwszy argument metody **call** to `this`, a każdy kolejny to następny argument wskazanej funkcji).
+
+### apply()
+
+Metoda ``apply()`` cechuje się tym samym, co metoda ``call()`` z jedną drobą różnicą. W przypadku metody **call** wymienialiśmy argument funkcji po przecinku po pierwszym argumencie będącym obiektem `this` (.call(archer, 50, ...) natomiast w przypadku metody **apply** używamy tablicy do deklarowania listy argumentów wskazanej funkcji (.apply(archer, [50, ...]).
+
+### bind()
+
+Metoda `bind()` działa tak jak metoda `call()`, ponownie z jedną różnicą. W przypadku metody **call** i **apply** funkcja, na której używaliśmy tej metody zostaje automatycznie wykonana (bez względu na konktest np. przypisywanie do zmiennej) natomaiast metoda **bind** tworzy nową deklarację funkcji ze zmienionym obiektem `this`, którą to deklaracje możemy przechowywać w zmiennej i wykorzystać w przyszłości:
+
+```
+const wizard = {
+  name: 'Merlin',
+  health: 50,
+  heal(hp) {
+    return this.health += hp
+  }
+}
+
+const archer = {
+  name: 'Robin Hood',
+  health: 30,
+}
+
+const healArcher = wizard.heal.bind(archer, 50)
+console.log(archer) // [...] health: 30, [...]
+
+healArcher() // 80
+console.log(archer) // [...] health: 80, [...]
+```

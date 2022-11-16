@@ -16,10 +16,10 @@ W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybran
   - [this](#obiekt-this)
     - [use strict](#use-strict)
     - [Funkcje strzałkowe](#funkcje-strzałkowe)
-    - [call, apply, bind](#call-apply-bind)
-      - [call](#call)
-      - [apply](#apply)
-      - [bind](#bind)
+    - [call(), apply(), bind()](#call-apply-bind)
+      - [call()](#call)
+      - [apply()](#apply)
+      - [bind()](#bind)
 - [KLASY](#klasy-oop)
 - [METODY](#metody)
 - [PROGRAMOWANIE FUNKCYJNE](#programowanie-funkcyjne-fp)
@@ -386,7 +386,7 @@ I oczywiście działa to analogicznie z kolejnymi argumentami (wystarczy wymieni
 
 ### apply()
 
-Metoda ``apply()`` cechuje się tym samym, co metoda ``call()`` z jedną drobą różnicą. W przypadku metody **call** wymienialiśmy argument funkcji po przecinku po pierwszym argumencie będącym obiektem `this` (.call(archer, 50, ...) natomiast w przypadku metody **apply** używamy tablicy do deklarowania listy argumentów wskazanej funkcji (.apply(archer, [50, ...]).
+Metoda ``apply()`` cechuje się tym samym, co metoda ``call()`` z jedną drobą różnicą. W przypadku metody **call** wymienialiśmy argumenty funkcji po przecinku po pierwszym argumencie będącym obiektem `this` (.call(archer, 50, ...) natomiast w przypadku metody **apply** używamy tablicy do deklarowania listy argumentów wskazanej funkcji (.apply(archer, [50, ...]).
 
 ### bind()
 

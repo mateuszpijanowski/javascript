@@ -1,7 +1,7 @@
 # Spis treści
 
 - [TYPY](#typy)
-  - [Określania typów](#określanie-typów-danych)
+  - [Określanie typów](#określanie-typów-danych)
 - [ZMIENNE](#zmienne)
   - [var](#var)
   - [let](#let)
@@ -16,6 +16,11 @@
       - [call](#call)
       - [apply](#apply)
       - [bind](#bind)
+- [KLASY](#klasy-oop)
+- [METODY](#metody)
+- [PROGRAMOWANIE FUNKCYJNE](#programowanie-funkcyjne-fp)
+- [ASYNCHRONICZNOŚĆ](#asynchroniczność)
+- [OBSŁUGA BŁĘDÓW](#obsługa-błędów)
 
 # Typy
 
@@ -403,3 +408,10 @@ console.log(archer) // [...] health: 30, [...]
 healArcher() // 80
 console.log(archer) // [...] health: 80, [...]
 ```
+# Klasy (OOP)
+
+# Programowanie funkcyjne (FP)
+
+# Asynchroniczność
+
+# Obsługa błędów

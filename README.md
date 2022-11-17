@@ -1,6 +1,14 @@
-**JavaScript** jak każdy inny język progrmowania to spory kawał wiedzy, definicji, sformuowań i logiki (lub jej braku). Wiedza ta lubi szybko wypadać z głowy i być niespodziewanie potrzebna (np. przed rozmową rekrutacyjną) lub gdy rzeczywiście zamiast grać w gierki musimy w pracy zrobić jakiegoś taska i odpalić zakurzonego ŁepStorma czy innego VS kota. 
+**JavaScript** jak każdy inny język programowania to spory kawał wiedzy, definicji, sformułowań i logiki (lub jej braku). Wiedza ta lubi szybko wypadać z głowy i być niespodziewanie potrzebna (np. przed rozmową rekrutacyjną) lub gdy rzeczywiście, zamiast grać w gierki musimy w pracy zrobić jakiegoś taska i odpalić zakurzonego ŁepStorma czy innego VS kota.
 
-W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybrane obszary informacji dotyczących funkcjonalości i logiki wspaniałego języka jakim jest JS! (lub przypomnieć nam dlaczego jest on aż tak dziwny (a jest dziwny)). **Miłej zabawy!**
+W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybrane obszary informacji dotyczących funkcjonalności i logiki wspaniałego języka, jakim jest JS! (lub przypomnieć nam, dlaczego jest on aż tak dziwny (a jest dziwny)).
+
+**UWAGA!** W celu skrócenia ilości informacji, a także zwiększenia jej przejrzystości poniższa ściąga wykorzystuje wiele uproszczeń i skrótów (po szczegółowe rozwinięcia poszczególnych tematów zapraszam do źródeł). Sam tekst jest raczej pisany dla kogoś, kto już co nieco kazał zrobić komputerowi za pomocą kolorowych literek i podstawowa wiedza z zakresu programowania, jak i samego JavaScriptu jest tutaj wymagana do pełnego zrozumienia poniższych opisów. 
+
+**Wszelkie błędy językowe, logiczne i merytoryczne niestety są tutaj możliwe i proszę mieć to na uwadze!** Gdy zauważysz tego typu błąd, proszę, stwórz nowy `pull request` z poprawką, dziękuję :)
+
+Podczas korzystania z poniższej ściągki zachęcam do korzystania z narzędzi pokroju https://codepen.io dla lepszego zrozumienia i przepracowania danych tematów.
+
+**Miłej zabawy!**
 
 # Spis treści
 
@@ -15,7 +23,7 @@ W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybran
   - [const](#const)
 - [FUNKCJE](#funkcje)
   - [syntax function](#deklaracja-po-przez-syntax-function)
-  - [funkcje strzałkowe](#deklaracja-funkcji-strzałkowej)
+  - [Funkcje strzałkowe](#deklaracja-funkcji-strzałkowej)
   - [this](#obiekt-this)
     - ['use strict'](#use-strict)
       - [Co zmienia 'use strict'?](#co-zmienia-use-strict)
@@ -35,13 +43,15 @@ W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybran
 - [METODY](#metody)
 - [PROGRAMOWANIE FUNKCYJNE](#programowanie-funkcyjne-fp)
 - [ASYNCHRONICZNOŚĆ](#asynchroniczność)
+- [MODUŁY I PAKIETY](#moduły-i-pakiety)
 - [OBSŁUGA BŁĘDÓW](#obsługa-błędów)
+- [ŹRÓDŁA](#źródła)
 
 # Typy
 
 Realnie każda wartość w JavaScript (oprócz `null` i `undefined`) jest obiektem (posiada własne metody, prototypy i relacje). Dzieje się tak dzięki wykorzystaniu określonych konstruktorów w procesie deklaracji wartości. 
 
-W celu ułatwienia (a wrecz umożliwienia) działania na danych i ich odróżniania JavaScript oferuje nam określone metody i operatory zwracające lub wskazujące bardziej szczegółowe typy danych, do których należą:
+W celu ułatwienia (a wręcz umożliwienia) działania na danych i ich odróżniania JavaScript oferuje nam określone metody i operatory zwracające lub wskazujące bardziej szczegółowe typy danych, do których należą:
 
 - `Boolean` -> true oraz false.
 - `null` -> specjalne słowo kluczowe oznaczające wartość zerową. Ponieważ w języku JavaScript rozróżniana jest wielkość liter, null nie jest tym samym co Null, NULL lub jakikolwiek inny wariant.
@@ -51,7 +61,7 @@ W celu ułatwienia (a wrecz umożliwienia) działania na danych i ich odróżnia
 - `Symbol` (nowość w ECMAScript 6) -> Typ danych, gdzie przykłady są niepowtarzalne i niezmienne.
 - `Object` -> obikety i podtypy (funkcje i tablice).
 
-Gdzie `Object` to typ złożony, pozostałe typy to tzn. typy prymitywne (nie rozkładjące się na podtypy).
+Gdzie `Object` to typ złożony, pozostałe typy to tzn. typy prymitywne (nie rozkładające się na podtypy).
 
 ## Określanie typów danych
 
@@ -61,18 +71,18 @@ const elo = 'test'
 typeof elo // String
 ```
 
-- `Array.isArray([wartość])` -> metoda zwracająca informacje o tym czy wskzana wartość jest tablicą (rozróznianie typu złożonego). Przykład:
+- `Array.isArray([wartość])` -> metoda zwracająca informacje o tym, czy wskazana wartość jest tablicą (rozróżnianie typu złożonego). Przykład:
 ```
 const elo = []
 Array.isArray(elo) // true
 ```
 
-- `[wartość] instanceof [Konstruktor]` -> testowanko czy określona wartość została 'wytowrzona' z użyciem wskazanego konstruktora (umożliwia określnaie typu funkcji). Przykład:
+- `[wartość] instanceof [Konstruktor]` -> testowanko czy określona wartość została 'wytworzona' z użyciem wskazanego konstruktora (umożliwia określanie typu funkcji). Przykład:
 ```
 function elo() {}
 console.log(elo instanceof Function) // true
 ```
-\*Domyślnie wszystkie funkcje są tworzone z wykorzystaniem konstruktora ``Function`` (analogicznia to wygląda dla danych typów np. ``String()``, ``Number()`` itd.)
+\*Domyślnie wszystkie funkcje są tworzone z wykorzystaniem konstruktora ``Function`` (analogicznie to wygląda dla danych typów np. ``String()``, ``Number()`` itd.)
 
 # Zmienne
 
@@ -82,7 +92,7 @@ Podstawowa deklaracja zmiennej podlegająca modyfikacją.
 ### Cechy charakterystyczne:
 
 #### Scoping (zakres funkcyjny)
-`var` posiada zakres funkcyjny przez co dostep do niego mamy w każdym miejscu wewnątrz funkcji. Przykład:
+`var` posiada zakres funkcyjny, przez co dostęp do niego mamy w każdym miejscu wewnątrz funkcji. Przykład:
 
 ```
 function elo() {
@@ -95,7 +105,7 @@ function elo() {
 ```
 
 #### Hoisting (opis)
-`var` podlega hoistingow co oznacza że kompilator js'a zanim zadeklaruje jej ostateczą wartość wskazaną w kodzie, utworzy zmienną z wartością `undefined`. Przykład:
+`var` podlega hoistingow, co oznacza że kompilator js'a zanim zadeklaruje jej ostateczną wartość wskazaną w kodzie, utworzy zmienną z wartością `undefined`. Przykład:
 
 ```
 console.log(elo) // undefined
@@ -104,7 +114,7 @@ console.log(elo) // 'test'
 ```
 
 #### Dodawanie wartości do globalnego obiektu
-`var` dodaje wartość do globalnego obiektu (global object -> window). Przykład:
+`var` dodaje wartość do globalnego obiektu (global object -> `window`). Przykład:
 
 ```
 var elo = 'test'
@@ -126,7 +136,7 @@ Deklaracja zaminnej podlegającej modyfikacją dodana w ES6.
 ### Cechy charakterystyczne:
 
 #### Scoping (zakres blokowy)
-`let` posiada zakres blokowy przez co dostep do niego mamy tylko wewnątrz określonego bloku (`{}`). Przykład:
+`let` posiada zakres blokowy, przez co dostęp do niego mamy tylko wewnątrz określonego bloku (`{}`). Przykład:
 
 ```
 function elo() {
@@ -151,7 +161,7 @@ console.log(elo) // 'test'
 ```
 
 #### Dodawanie wartości do globalnego obiektu
-Zmienne `let` nie zostają dodane do globalnego obiektu (global object -> window). Przykład:
+Zmienne `let` nie zostają dodane do globalnego obiektu (global object -> `window`). Przykład:
 
 ```
 let elo = 'test'
@@ -167,7 +177,7 @@ let elo = 'test123' // ERROR
 ```
 
 ## CONST
-Deklaracja stałej unemożliwająca bezpośrednią modyfikacje wartości. Cechy charakterystyczne zmiennej `let`.
+Deklaracja stałej uniemożliwiająca bezpośrednią modyfikację wartości. Cechy charakterystyczne zmiennej `let`.
 
 # Funkcje
 
@@ -207,13 +217,13 @@ Przykład:
 - name -> nazwa funkcji
 - lenght -> liczba oczekiwanych argumentów
 
-\* Funkcja strzałkowa posiada cechy zwykłej funkcji rozszerzonej o działanie syntax'u `'use strict'`.
+\* Funkcja strzałkowa ma cechy zwykłej funkcji rozszerzonej o działanie syntax'u `'use strict'`.
 
 ## Obiekt this
 
-Zacznijmy od definicji `this` - jest to referencja do okiektu w kotekście którego została wykonana funkcja wewnątrz której używamy `this`. Początkowo może nie brzmieć to zbyt jasno ale proste przykłady powinny rozwiać wszelkie wątpliwości.
+Zacznijmy od definicji `this` - jest to referencja do obiektu w kontekście którego została wykonana funkcja, wewnątrz której używamy `this`. Początkowo może nie brzmieć to zbyt jasno, ale proste przykłady powinny rozwiać wszelkie wątpliwości.
 
-obj.someFn(this) -> this w tym przypadku zwróci nam `obj`
+`obj.someFn(this)` -> `this` w tym przypadku zwróci nam `obj`
 
 Spójrzmy na bardziej rozbudowany przykład:
 
@@ -229,9 +239,9 @@ const obj = {
 obj.getData() // Adam ma 20 lat.
 ```
 
-Ten prosty przykład powienien dokładnie zobrazować co dokładnie zwraca nam obkiet `this` i jakie daje nam możliwości.
+Ten prosty przykład powinien dokładnie zobrazować co dokładnie zwraca nam obiekt `this` i jakie daje nam możliwości.
 
-Domyślnie `this` w wskazuje nam obiekt window (zakładając że mówimy o webowym wykorzystaniu JS'a) -> this === widnow // true
+Domyślnie `this` wskazuje nam obiekt `window` (zakładając, że mówimy o webowym wykorzystaniu JS'a) -> `this === widnow` // true
 
 ```
 function a() {
@@ -241,7 +251,7 @@ function a() {
 a() // window object
 ```
 
-Dzieje się tak ponieważ wywłanie ``a()`` w globalnym kontekście to nic innego jak ``window.a()``.
+Dzieje się tak, ponieważ wywołanie `a()` w globalnym kontekście to nic innego jak `window.a()`.
 
 ## 'use strict'
 
@@ -262,15 +272,15 @@ const obj = {
 obj.getData() // undefined ma 20 lat.
 ```
 
-Mamy tutaj pewien problem, mianowicie chcielibyśmy aby nasza funkcja zwróciła nam to samo co funkcja z wcześniejszego przykładu, jednak zamiast zwrotki 'Adam' z funkcji `getName` otrzymujemy `undefined`. Dlaczego tak się dzieje? Spójrzmy dokładniej na kontekst wykonania funkcji `getName`.
+Mamy tutaj pewien problem, mianowicie chcielibyśmy, aby nasza funkcja zwróciła nam to samo co funkcja z wcześniejszego przykładu, jednak zamiast zwrotki 'Adam' z funkcji `getName` otrzymujemy `undefined`. Dlaczego tak się dzieje? Spójrzmy dokładniej na kontekst wykonania funkcji `getName`.
 
 ```
 return `${getName()} ma ${this.age} lat.`
 ```
 
-Jak możemy zauważyć przed nazwą funkcji nie mamy nic, więc kierując się wcześniejszymi informacjami może założyć że `getName()` to inaczej `window.getName()` i rzeczywiście to jest przyczyna naszego problemu. Miejsce wykonania funkcji nie ma w tym przypadku żadnego znaczenia liczy się referencja do obiektu nadrzędnego. Tutaj nie mam takiej referencji więc domyśnie `this` zwraca nam obiekt `window`, a obiekt `window` nie posiada wartości `name`.
+Jak możemy zauważyć, przed nazwą funkcji nie mamy nic, więc kierując się wcześniejszymi informacjami, możemy założyć, że `getName()` to inaczej `window.getName()` i rzeczywiście to jest przyczyna naszego problemu. Miejsce wykonania funkcji nie ma w tym przypadku żadnego znaczenia, liczy się referencja do obiektu nadrzędnego. Tutaj nie mam takiej referencji więc domyślnie `this` zwraca nam obiekt globalny `window`, a obiekt `window` nie ma wartości `name` (lub ma ale inną niż my chcemy definiować).
 
-Chyba możemy się zgodzić że nie jest to rozwiązanie zbyt intuicyjne. W związku z tym kolejne wersje JS'a otrzymały możliwość rozwiązania tego problemu dzięki wykorzystaniu syntax'a 'use strict' deklarowanego na początku funkcji lub skryptu. Spójrzmy co się stanie gdy użyjemy tej wartości.
+Chyba możemy się zgodzić, że nie jest to rozwiązanie zbyt intuicyjne. W związku z tym kolejne wersje JS'a otrzymały możliwość rozwiązania tego problemu dzięki wykorzystaniu syntax'a `'use strict'` deklarowanego na początku funkcji lub skryptu. Spójrzmy, co się stanie, gdy użyjemy tej wartości.
 
 ```
 const obj = {
@@ -288,21 +298,21 @@ const obj = {
 obj.getData()
 ```
 
-Wykonanie naszego kodu skończy się na błędzie "Cannot read properties of undefined (reading 'name')". Dzieje się tak ponieważ 'use strict' zapobiega przypiswaniu obiektu this domyślnej wartości `window` i tym samym wymaga od nas wykorzystywania `this` tylko w odpowiednim kontekście, które zawiera referencje do obiektu nadrzędnego.
+Wykonanie naszego kodu skończy się na błędzie "Cannot read properties of undefined (reading 'name')". Dzieje się tak, ponieważ `'use strict'` zapobiega przypisaniu obiektu `this` domyślnej wartości `window` i tym samym wymaga od nas wykorzystywania `this` tylko w odpowiednim kontekście, które zawiera referencje do obiektu nadrzędnego.
 
-`'use strict'` w tym przypdaku nie do końca rozwiązuje nasz problem, ale zanim przejdziemy do tego co nam tutaj rzeczywiście pomoże chciałbym pochylić się trochę nad tym co dokładnie zmienia `'use strict'` i dlaczego.
+`'use strict'` w tym przypadku nie do końca rozwiązuje nasz problem, ale zanim przejdziemy do tego, co nam tutaj rzeczywiście pomoże, chciałbym pochylić się trochę, nad tym, co dokładnie zmienia `'use strict'` i dlaczego.
 
 ### Co zmienia 'use strict'?
 
-Tryb "ścisły" powstał w aktualizacji ES5 i miał za zadanie załatać kilka problemów JS'a, a także włączyć tryb w którym kompilator nie przepuści nam wszystkich głupot które mogliśmy wymyśleć w naszych kolorowych literkach. Tryb ten definiujemy dla całego skryptu, funkcji, modułu lub dla konkretnej klasy i tylko wskazany obszar kodu będzie objęty restrykcyjniejszymi zasadami.
+Tryb "ścisły" powstał w aktualizacji ES5 i miał za zadanie załatać kilka problemów JS'a, a także włączyć tryb, w którym kompilator nie przepuści nam wszystkich głupot, które mogliśmy wymyślić w naszych kolorowych literkach. Tryb ten definiujemy dla całego skryptu, funkcji, modułu lub dla konkretnej klasy i tylko wskazany obszar kodu będzie objęty restrykcyjnymi zasadami.
 
-Warto zaznaczyć że nie każda wersja danej przeglądarki wspiera 'use strict' w związku z tym poleganie na nim nie zawsze było pewne i zależało od środowiska w którym kod był testowany/kompilowany.
+Warto zaznaczyć, że nie każda wersja danej przeglądarki wspiera `'use strict'` w związku z tym poleganie na nim nie zawsze było pewne i zależało od środowiska, w którym kod był testowany/kompilowany.
 
-No dobra wiemy po co nam ten tryb i jak go włączyć, teraz pytanie co dokładnie on zmienia.\
+No dobra wiemy, po co nam ten tryb i jak go włączyć, teraz pytanie, co dokładnie on zmienia.
 
 #### Zmiana pomyłek w kodzie na błędy
 
-Poznaliśmy już kilka dziwnych zachować JS'a które kompilator ignorował i głaskał nas po główce. `'use strict'` wprowadza nam tutaj pewną rewolucję, mianowicie wiele z tych "pomyłek" przetwarza na realne błędy przez co wymusza na nas zmianę logiki średnio napisanego kodu wykorzystującego luki JS'a lub wskazuje nam konkretne miejsce gdzie mogliśmy (po przez wady języka) popełnić błąd. Taki przykład był podany na początku rozdziału o `'use strict'`.
+Poznaliśmy już kilka dziwnych zachować JS'a, które kompilator ignorował i głaskał nas po główce. `'use strict'` wprowadza nam tutaj pewną rewolucję, mianowicie wiele z tych "pomyłek" przetwarza na realne błędy, przez co wymusza na nas zmianę logiki średnio napisanego kodu wykorzystującego luki JS'a lub wskazuje nam konkretne miejsce, gdzie mogliśmy (poprzez wady języka) popełnić błąd. Taki przykład był podany na początku rozdziału o `'use strict'`.
 
 #### Przypisywanie wartości do nie istniejących zmiennych
 
@@ -311,7 +321,9 @@ let fajnaZmienna;
 fajnaZmiena = 'elo';
 ```
 
-Widać tutaj coś podejrzanego? Jeżeli nie to gratulacje kompilator ma takie samo zdanie! Ale przyjrzyjcie się dokładnie jak została napisana zmienna w drugim wierszu. Jeżeli dalej nioe widzicie to podpowiem że według słownika języka polskiego powinniśmy pisać zmieNNa przez dwa "n". No tak standardowy bład podczas pisania kodu pomyłki językowe, zgubione literki czy jakieś inne głupoty wynikające z 3 dnia ciągłej pracy przed deadlinem to codzienność. Prolbem polega na tym że w kontekście debuggowania dużego fragmentu kodu będzie nam bardzo ciężko dotrzeć do tego gdzie popełniliśmy błąd i że polega on na brakującej liternce w zmiennej.
+Widać tutaj coś podejrzanego? Jeżeli nie to gratulacje kompilator ma takie samo zdanie! Przyjrzyjcie się dokładnie, jak została napisana zmienna w drugim wierszu. Jeżeli dalej nie widzicie, to podpowiem, że według słownika języka polskiego powinniśmy pisać zmie**NN**a przez dwa "n". 
+
+No tak standardowy błąd podczas pisania kodu pomyłki językowe, zgubione literki czy jakieś inne głupoty wynikające z 3 dnia ciągłej pracy przed deadlinem to codzienność. Problem polega na tym, że w kontekście debuggowania dużego fragmentu kodu będzie nam bardzo ciężko dotrzeć do tego, gdzie popełniliśmy błąd i że polega on na brakującej liternce w zmiennej.
 
 ```
 'use strict'
@@ -320,11 +332,11 @@ let fajnaZmienna
 fajnaZmiena = 'elo' // Uncaught ReferenceError: fajnaZmiena is not defined
 ```
 
-Użycie `'use strict'` naprawia nam tutaj problem (a w zasadzie go tworzy ale nieco szybkiej i z konkretnym wsazaniem).
+Użycie `'use strict'` naprawia nam tutaj problem (a w zasadzie go tworzy, ale nieco szybkiej i z konkretnym wskazaniem).
 
 #### Nieudane próby przypisania wartości
 
-W JS'ie istnieje kilka scenariuszy w którym możemy chcieć przypisać do cczegoś wartoś a realnie tego nie zrobimy i dodatkowo nikt nam o niczym nie powie. Spójrzcie na pooniższe przykłady:
+W JS'ie istnieje kilka scenariuszy, w którym możemy chcieć przypisać do czegoś wartość, a realnie tego nie zrobimy i dodatkowo nikt nam o niczym nie powie. Spójrzcie na poniższe przykłady:
 
 ```
 var NaN = 5
@@ -342,9 +354,9 @@ obj.wiek = 15
 console.log(obj.wiek) // 20
 ```
 
-Jak widać powyżej wszystkie próby przypisania wartości nic nie zmieniają. To trochę problem ponieważ podobnych przykładów jest całkiem sporo, a JS nic nam nie mówi dla niego jak i dla nas w momencie pisania tego kodu wszystko jest spoko.
+Jak widać, powyżej wszystkie próby przypisania wartości nic nie zmieniają. To trochę problem, ponieważ podobnych przykładów jest całkiem sporo, a JS nic nam nie mówi. Dla niego, jak i dla nas w momencie pisania tego kodu wszystko jest spoko.
 
-Jak możemy się domyślić rozwiązaniem tego problemu jest zadeklarowanie `'use strict'` w pierwszej linijce skryptu dzięki czemu w każdej z tych prób JS rzuci nam błędem z dokładnym opisem co poszło nie tak.
+Jak możemy się domyślić, rozwiązaniem tego problemu jest zadeklarowanie `'use strict'` w pierwszej linijce skryptu, dzięki czemu w każdej z tych prób JS rzuci nam błędem z dokładnym opisem, co poszło nie tak.
 
 #### Usuwanie właściwości obiektów
 
@@ -363,8 +375,8 @@ delete fajnaTablica.length
 console.log(fajnaTablica.length) // 0
 ```
 
-Tutaj ponownie próbujemy zrobić jakieś nielegane rzeczy, ale nic nam z tego nie wychodzi i nawet o tym nie wiemy (gdyby nie nasz wścibski `console.log`).
-Dodanie `'use strict'` rozwiązuje nasz problem i ponownie w każdym z tych miejsc otrzymamy fajne error.
+Tutaj ponownie próbujemy zrobić jakieś nielegalne rzeczy, ale nic nam z tego nie wychodzi i nawet o tym nie wiemy (wszystko by się udało gdyby nie ten wścibski `console.log`!).
+Dodanie `'use strict'` rozwiązuje nasz problem i ponownie w każdym z tych miejsc otrzymamy fajne error'y.
 
 #### Duplikowanie argumentów funkcji
 
@@ -374,7 +386,7 @@ function jestemFunkcjaKtoraDodajeArgumenty(a, b, b) {
 }
 ```
 
-Ten jakże ciekawy przykład pokazuje kolejny prosty do osiągnięcia błd od strony logiki naszego kodu. Dodanie `'use strict'` rzuci nam tutaj błędem wskazującym na podwójną deklarację tego samego argumentu.
+Ten jakże ciekawy przykład pokazuje kolejny prosty do osiągnięcia błąd od strony logiki naszego kodu. Dodanie `'use strict'` rzuci nam tutaj błędem wskazującym na podwójną deklarację tego samego argumentu.
 
 #### Duplikowanie wartości obiektu
 
@@ -387,31 +399,31 @@ var obj = {
 console.log(obj.name) // Stefan wygrał
 ```
 
-Kolejny błąd i kolejne ignorowanei go ze strony JS'a. Oczywiście dodanie `'use strict'` zwróci nam tutaj odpowiedni błąd.
+Kolejny błąd i kolejne ignorowanie go ze strony JS'a. Oczywiście dodanie `'use strict'` zwróci nam tutaj odpowiedni błąd.
 
 ### Czy powinniśmy używać 'use strict'
 
-Hah co za głupie pytanie przecież powyższe argumenty chyba jasno wskazują na odpowiedź! Zanim jednak do niej przejdziemy warto dodać, że nie wypisałem tutaj wszystkich zmian jakie wprowadza nam użycie `'use strict'`. Mimo to wydaje mi się że wypisałem najważniejsze z nich wraz ze wcześniejszą modyfikacją działania obiektu `this`. Po więcej zapraszam do źródeł.
+Hah co za głupie pytanie przecież powyższe argumenty chyba jasno wskazują na odpowiedź! Zanim jednak do niej przejdziemy, warto dodać, że nie wypisałem tutaj wszystkich zmian, jakie wprowadza nam użycie `'use strict'`. Mimo to wydaje mi się, że wypisałem najważniejsze z nich wraz ze wcześniejszą modyfikacją działania obiektu `this`. Po więcej zapraszam do źródeł.
 
 Wróćmy teraz do pytania i do odpowiedzi która brzmi:
 
 - **NIE** (choć to zależy)
 
-Dlaczego?! Kolejna odpowiedź będzie nieco dłuższa ale podobnie prosta - większość zmian wprowadzanych przez `'use strict'` zostaje automatycznie zaimplementowana podczas używania standardów wprowadzonych w aktualizacji ES6 takich jak chociażby deklarowanie zmienny przy użyciu `let` i `const` zamiast `var` czy używania funkcji strzałkowych. Dodatkowo używanie modułów domyśnie wprowadza w ich zakresie działania zasady `'use strict'`. Podobnie sprawa wygląda w przypadku klas.
+Dlaczego?! Kolejna odpowiedź będzie nieco dłuższa, ale podobnie prosta - większość zmian wprowadzanych przez `'use strict'` zostaje automatycznie zaimplementowana podczas używania standardów wprowadzonych w aktualizacji ES6 takich jak, chociażby deklarowanie zmienny przy użyciu `let` i `const` zamiast `var` czy używania funkcji strzałkowych. Dodatkowo używanie modułów domyślnie wprowadza w ich zakresie działania zasady `'use strict'`. Podobnie sprawa wygląda w przypadku klas.
 
-No dobra ale dopisałem do wielkiego **NIE**, że to zależy. W rzeczywistości rzeczywiście może to zależeć choćby od tego z jakim kodem mamy do czynienia. W naszej pracy nie rzadko wpadamy w legacy kod napisany przez kogoś z środkowej azji 10 lat temu. Wtedy użycie `'use strict'` w konkretnych pomniejszych obszarach kodu może nam pomóc szybko wyłapać patologie w kolorowych literkach i szybko je załatać.
+No dobra, ale dopisałem do wielkiego **NIE**, że to zależy. W rzeczywistości rzeczywiście może to zależeć choćby od tego, z jakim kodem mamy do czynienia. W naszej pracy nie rzadko wpadamy w legacy kod napisany przez kogoś ze środkowej Azji 10 lat temu. Wtedy użycie `'use strict'` w konkretnych pomniejszych obszarach kodu może nam pomóc szybko wyłapać patologie w kolorowych literkach i szybko je załatać.
 
-Tak to już jest z naszym kochanym JS'em nie ma tutaj jasnych i prostych odpowiedzi czy czegoś używać czy też nie. Jak zwykle wszystko zależy i jak zwykle kluczem do dobrych decyzji jest wiedzy czym różnia się dane podejścia.
+Tak to już jest z naszym kochanym JS'em nie ma tutaj jasnych i prostych odpowiedzi czy czegoś używać, czy też nie. Jak zwykle wszystko zależy i jak zwykle kluczem do dobrych decyzji jest wiedzy, czym różnią się dane podejścia.
 
 ## Funkcje strzałkowe
 
-No dobra wracając do naszego `this` - `'use strict'` nie rozwiązuje do końca naszego problemu. Celem naszej funkcji jest zwrócenie tesktu "Adam ma 20 lat.", a nie rzucenie błędem mówiącym nam, że nie umiemy w kolorowe literki. Ostatecznym rozwiązaniem tego problemu są funkcje strzałkowe wprowadzone w wersji ES6. W opisie funkcji strzałkowej możemy przeczytać:
+No dobra wracając do naszego `this` - `'use strict'` nie rozwiązuje do końca naszego problemu. Celem naszej funkcji jest zwrócenie tekstu "Adam ma 20 lat.", a nie rzucenie błędem mówiącym nam, że nie umiemy w kolorowe literki. Ostatecznym rozwiązaniem tego problemu są funkcje strzałkowe wprowadzone w wersji ES6. W opisie funkcji strzałkowej możemy przeczytać:
 
 ```
 - brak własnego obiektu this -> zawsze jest to referencja do nadrzędnego `this`
 ```
 
-Dzięki tej definicji możemy przerobić nasz przykład, tak by wreszcie zwracam nam to czego potrzebujemy:
+Dzięki tej definicji możemy przerobić nasz przykład, tak by wreszcie zwracam nam to, czego potrzebujemy:
 
 ```
 const obj = {
@@ -428,8 +440,8 @@ const obj = {
 console.log(obj.getData()) // Adam ma 20 lat.
 ```
 
-I vuala nasz kod wreszcie robi to czego od początku oczekiwaliśmy. Warto w tym miejscu pamiętać, o tym że wykorzystanie funkcji strzałkowej a zwykłej deklaracji powinno być kontekstowe (to nie tak że funkcja strzałkowa jest najlepsza i tylko jej używamy). 
-Kluczem jest tutaj wiedza czym te deklaracje się różnią i którą z nich użyć w danym przypadku.
+I vuala nasz kod wreszcie robi to, czego od początku oczekiwaliśmy. Warto w tym miejscu pamiętać, o tym, że wykorzystanie funkcji strzałkowej a zwykłej deklaracji powinno być kontekstowe (to nie tak, że funkcja strzałkowa jest najlepsza i tylko jej używamy).
+Kluczem jest tutaj wiedza, czym te deklaracje się różnią i którą z nich użyć w danym przypadku.
 
 ```
 const obj = {
@@ -469,7 +481,7 @@ wizard.heal() // 100
 console.log(wizard) // [...] health: 100, [...]
 ```
 
-Prosty przykła, który prezentuje nam wykorzystanie this do zmiany wartości określonego pola w obiekcie. Co jednak jeżeli dorzucimy kolejną postać (obiekt) do naszej gry która sama nie posiada funkcji heal(), ale chciała by skorzystać z tej umiejętności naszego maga? Tutaj z pomocą przychodzi nam metoda `call()`.
+Prosty przykład, który prezentuje nam wykorzystanie this do zmiany wartości określonego pola w obiekcie. Co, jednak jeżeli dorzucimy kolejną postać (obiekt) do naszej gry, która sama nie posiada funkcji `heal()`, ale chciałaby skorzystać z tej umiejętności naszego maga? Tutaj z pomocą przychodzi nam metoda `call()`.
 
 ```
 const wizard = {
@@ -491,7 +503,7 @@ console.log(archer) // [...] health: 100, [...]
 
 Ciekawe prawda? **Call** umożliwia nam wykonanie wskazanej funkcji ze zmienionym obiektem `this` na to, co przekażemy w jej argumencie. Dzięki temu jesteśmy w stanie wykorzystywać zdolność (funkcję) jednej postaci (obiektu) na drugiej postaci (drugim obiekcie z innymi danymi bez pierwotnej funkcji).
 
-No dobra a co jeżeli nasza funkcja `heal()` wyglądała by tak:
+No dobra a co jeżeli nasza funkcja `heal()` wyglądałaby tak:
 
 ```
 heal(hp) {
@@ -499,7 +511,7 @@ heal(hp) {
 }
 ```
 
-W jaki sposób terz możemy ją wykorzystać w innym obiekcie przy jednoczesnym przekazaniu wartości argumentu `hp`?
+W jaki sposób teraz możemy ją wykorzystać w innym obiekcie przy jednoczesnym przekazaniu wartości argumentu `hp`?
 
 ```
 wizard.heal.call(archer, 50) // 80
@@ -510,11 +522,11 @@ I oczywiście działa to analogicznie z kolejnymi argumentami (wystarczy wymieni
 
 ### apply()
 
-Metoda ``apply()`` cechuje się tym samym, co metoda ``call()`` z jedną drobą różnicą. W przypadku metody **call** wymienialiśmy argumenty funkcji po przecinku po pierwszym argumencie będącym obiektem `this` (.call(archer, 50, ...) natomiast w przypadku metody **apply** używamy tablicy do deklarowania listy argumentów wskazanej funkcji (.apply(archer, [50, ...]).
+Metoda ``apply()`` cechuje się tym samym, co metoda ``call()`` z jedną drobną różnicą. W przypadku metody **call** wymienialiśmy argumenty funkcji po przecinku po pierwszym argumencie będącym obiektem `this` (.call(archer, 50, ...) natomiast w przypadku metody **apply** używamy tablicy do deklarowania listy argumentów wskazanej funkcji (.apply(archer, [50, ...]).
 
 ### bind()
 
-Metoda `bind()` działa tak jak metoda `call()`, ponownie z jedną różnicą. W przypadku metody **call** i **apply** funkcja, na której używaliśmy tej metody zostaje automatycznie wykonana (bez względu na konktest np. przypisywanie do zmiennej) natomaiast metoda **bind** tworzy nową deklarację funkcji ze zmienionym obiektem `this`, którą to deklaracje możemy przechowywać w zmiennej i wykorzystać w przyszłości:
+Metoda `bind()` działa tak jak metoda `call()`, ponownie z jedną różnicą. W przypadku metody **call** i **apply** funkcja, na której używaliśmy tej metody, zostaje automatycznie wykonana (bez względu na kontekst np. przypisywanie do zmiennej) natomiast metoda **bind** tworzy nową deklarację funkcji ze zmienionym obiektem `this`, którą to deklaracje możemy przechowywać w zmiennej i wykorzystać w przyszłości:
 
 ```
 const wizard = {
@@ -549,3 +561,7 @@ console.log(archer) // [...] health: 80, [...]
 # Obsługa błędów
 
 # Źródła
+
+- https://developer.mozilla.org/
+- https://www.w3schools.com/
+- JavaScript: The Advanced Concepts (2023 Update) - https://www.udemy.com/course/advanced-javascript-concepts/

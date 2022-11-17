@@ -2,7 +2,7 @@
 
 W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybrane obszary informacji dotyczących funkcjonalności i logiki wspaniałego języka, jakim jest JS! (lub przypomnieć nam, dlaczego jest on aż tak dziwny (a jest dziwny)).
 
-**UWAGA!** W celu skrócenia ilości informacji, a także zwiększenia jej przejrzystości poniższa ściąga wykorzystuje wiele uproszczeń i skrótów (po szczegółowe rozwinięcia poszczególnych tematów zapraszam do źródeł). Sam tekst jest raczej pisany dla kogoś, kto już co nieco kazał zrobić komputerowi za pomocą kolorowych literek i podstawowa wiedza z zakresu programowania, jak i samego JavaScriptu jest tutaj wymagana do pełnego zrozumienia poniższych opisów. 
+**UWAGA!** W celu skrócenia ilości informacji, a także zwiększenia jej przejrzystości poniższa ściąga wykorzystuje wiele uproszczeń i skrótów (po szczegółowe rozwinięcia poszczególnych tematów zapraszam do źródeł). Sam tekst jest raczej pisany dla kogoś, kto już co nieco kazał zrobić komputerowi za pomocą kolorowych literek i podstawowa wiedza z zakresu programowania, jak i samego JavaScriptu jest tutaj wymogiem do pełnego zrozumienia poniższych opisów. 
 
 **Wszelkie błędy językowe, logiczne i merytoryczne niestety są tutaj możliwe i proszę mieć to na uwadze!** Gdy zauważysz tego typu błąd, proszę, stwórz nowy `pull request` z poprawką, dziękuję :)
 
@@ -39,12 +39,12 @@ Podczas korzystania z poniższej ściągki zachęcam do korzystania z narzędzi 
       - [call()](#call)
       - [apply()](#apply)
       - [bind()](#bind)
-- [KLASY](#klasy-oop)
-- [METODY](#metody)
-- [PROGRAMOWANIE FUNKCYJNE](#programowanie-funkcyjne-fp)
-- [ASYNCHRONICZNOŚĆ](#asynchroniczność)
-- [MODUŁY I PAKIETY](#moduły-i-pakiety)
-- [OBSŁUGA BŁĘDÓW](#obsługa-błędów)
+- [KLASY (todo)](#klasy-oop)
+- [METODY (todo)](#metody)
+- [PROGRAMOWANIE FUNKCYJNE (todo)](#programowanie-funkcyjne-fp)
+- [ASYNCHRONICZNOŚĆ (todo)](#asynchroniczność)
+- [MODUŁY I PAKIETY (todo)](#moduły-i-pakiety)
+- [OBSŁUGA BŁĘDÓW (todo)](#obsługa-błędów)
 - [ŹRÓDŁA](#źródła)
 
 # Typy

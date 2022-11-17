@@ -18,6 +18,14 @@ W związku z tym poniższa ściąga ma za zadanie szybko przypomnieć nam wybran
   - [funkcje strzałkowe](#deklaracja-funkcji-strzałkowej)
   - [this](#obiekt-this)
     - ['use strict'](#use-strict)
+      - [Co zmienia 'use strict'?](#co-zmienia-use-strict)
+        - [Zmiana pomyłek w kodzie na błędy](#zmiana-pomyłek-w-kodzie-na-błędy)
+        - [Przypisywanie wartości do nie istniejących zmiennych](#przypisywanie-wartości-do-nie-istniejących-zmiennych)
+        - [Nieudane próby przypisania wartości](#nieudane-próby-przypisania-wartości)
+        - [Usuwanie właściwości obiektów](#usuwanie-właściwości-obiektów)
+        - [Duplikowanie argumentów funkcji](#duplikowanie-argumentów-funkcji)
+        - [Duplikowanie wartości obiektu](#duplikowanie-wartości-obiektu)
+      - [Czy powinniśmy używać 'use strict'](#czy-powinniśmy-używać-use-strict)
     - [Funkcje strzałkowe](#funkcje-strzałkowe)
     - [call(), apply(), bind()](#call-apply-bind)
       - [call()](#call)
@@ -282,9 +290,122 @@ obj.getData()
 
 Wykonanie naszego kodu skończy się na błędzie "Cannot read properties of undefined (reading 'name')". Dzieje się tak ponieważ 'use strict' zapobiega przypiswaniu obiektu this domyślnej wartości `window` i tym samym wymaga od nas wykorzystywania `this` tylko w odpowiednim kontekście, które zawiera referencje do obiektu nadrzędnego.
 
+`'use strict'` w tym przypdaku nie do końca rozwiązuje nasz problem, ale zanim przejdziemy do tego co nam tutaj rzeczywiście pomoże chciałbym pochylić się trochę nad tym co dokładnie zmienia `'use strict'` i dlaczego.
+
+### Co zmienia 'use strict'?
+
+Tryb "ścisły" powstał w aktualizacji ES5 i miał za zadanie załatać kilka problemów JS'a, a także włączyć tryb w którym kompilator nie przepuści nam wszystkich głupot które mogliśmy wymyśleć w naszych kolorowych literkach. Tryb ten definiujemy dla całego skryptu, funkcji, modułu lub dla konkretnej klasy i tylko wskazany obszar kodu będzie objęty restrykcyjniejszymi zasadami.
+
+Warto zaznaczyć że nie każda wersja danej przeglądarki wspiera 'use strict' w związku z tym poleganie na nim nie zawsze było pewne i zależało od środowiska w którym kod był testowany/kompilowany.
+
+No dobra wiemy po co nam ten tryb i jak go włączyć, teraz pytanie co dokładnie on zmienia.\
+
+#### Zmiana pomyłek w kodzie na błędy
+
+Poznaliśmy już kilka dziwnych zachować JS'a które kompilator ignorował i głaskał nas po główce. `'use strict'` wprowadza nam tutaj pewną rewolucję, mianowicie wiele z tych "pomyłek" przetwarza na realne błędy przez co wymusza na nas zmianę logiki średnio napisanego kodu wykorzystującego luki JS'a lub wskazuje nam konkretne miejsce gdzie mogliśmy (po przez wady języka) popełnić błąd. Taki przykład był podany na początku rozdziału o `'use strict'`.
+
+#### Przypisywanie wartości do nie istniejących zmiennych
+
+```
+let fajnaZmienna;
+fajnaZmiena = 'elo';
+```
+
+Widać tutaj coś podejrzanego? Jeżeli nie to gratulacje kompilator ma takie samo zdanie! Ale przyjrzyjcie się dokładnie jak została napisana zmienna w drugim wierszu. Jeżeli dalej nioe widzicie to podpowiem że według słownika języka polskiego powinniśmy pisać zmieNNa przez dwa "n". No tak standardowy bład podczas pisania kodu pomyłki językowe, zgubione literki czy jakieś inne głupoty wynikające z 3 dnia ciągłej pracy przed deadlinem to codzienność. Prolbem polega na tym że w kontekście debuggowania dużego fragmentu kodu będzie nam bardzo ciężko dotrzeć do tego gdzie popełniliśmy błąd i że polega on na brakującej liternce w zmiennej.
+
+```
+'use strict'
+
+let fajnaZmienna
+fajnaZmiena = 'elo' // Uncaught ReferenceError: fajnaZmiena is not defined
+```
+
+Użycie `'use strict'` naprawia nam tutaj problem (a w zasadzie go tworzy ale nieco szybkiej i z konkretnym wsazaniem).
+
+#### Nieudane próby przypisania wartości
+
+W JS'ie istnieje kilka scenariuszy w którym możemy chcieć przypisać do cczegoś wartoś a realnie tego nie zrobimy i dodatkowo nikt nam o niczym nie powie. Spójrzcie na pooniższe przykłady:
+
+```
+var NaN = 5
+console.log(fajnaLiczba) // NaN
+
+var undefined = 'wcale nie bo coś tutaj deklaruje!'
+console.log(undefined) // undefined
+
+const obj = {
+  get wiek() {
+    return 20
+  },
+}
+obj.wiek = 15
+console.log(obj.wiek) // 20
+```
+
+Jak widać powyżej wszystkie próby przypisania wartości nic nie zmieniają. To trochę problem ponieważ podobnych przykładów jest całkiem sporo, a JS nic nam nie mówi dla niego jak i dla nas w momencie pisania tego kodu wszystko jest spoko.
+
+Jak możemy się domyślić rozwiązaniem tego problemu jest zadeklarowanie `'use strict'` w pierwszej linijce skryptu dzięki czemu w każdej z tych prób JS rzuci nam błędem z dokładnym opisem co poszło nie tak.
+
+#### Usuwanie właściwości obiektów
+
+Paczaj co tutaj się wyprawia:
+
+```
+var noFajnaZmienna = 'tak tak jestem fajną zmienna'
+delete noFajnaZmienna
+console.log(noFajnaZmienna) // 'tak tak jestem fajną zmienna'
+
+delete Object.call
+console.log(Object.call) // function ...
+
+var fajnaTablica = []
+delete fajnaTablica.length
+console.log(fajnaTablica.length) // 0
+```
+
+Tutaj ponownie próbujemy zrobić jakieś nielegane rzeczy, ale nic nam z tego nie wychodzi i nawet o tym nie wiemy (gdyby nie nasz wścibski `console.log`).
+Dodanie `'use strict'` rozwiązuje nasz problem i ponownie w każdym z tych miejsc otrzymamy fajne error.
+
+#### Duplikowanie argumentów funkcji
+
+```
+function jestemFunkcjaKtoraDodajeArgumenty(a, b, b) {
+  return a + b + b // po co deklarować nowe literki jak można korzystać z tych samych?
+}
+```
+
+Ten jakże ciekawy przykład pokazuje kolejny prosty do osiągnięcia błd od strony logiki naszego kodu. Dodanie `'use strict'` rzuci nam tutaj błędem wskazującym na podwójną deklarację tego samego argumentu.
+
+#### Duplikowanie wartości obiektu
+
+```
+var obj = {
+  name: 'Adam',
+  name: 'Stefan',
+}
+
+console.log(obj.name) // Stefan wygrał
+```
+
+Kolejny błąd i kolejne ignorowanei go ze strony JS'a. Oczywiście dodanie `'use strict'` zwróci nam tutaj odpowiedni błąd.
+
+### Czy powinniśmy używać 'use strict'
+
+Hah co za głupie pytanie przecież powyższe argumenty chyba jasno wskazują na odpowiedź! Zanim jednak do niej przejdziemy warto dodać, że nie wypisałem tutaj wszystkich zmian jakie wprowadza nam użycie `'use strict'`. Mimo to wydaje mi się że wypisałem najważniejsze z nich wraz ze wcześniejszą modyfikacją działania obiektu `this`. Po więcej zapraszam do źródeł.
+
+Wróćmy teraz do pytania i do odpowiedzi która brzmi:
+
+- **NIE** (choć to zależy)
+
+Dlaczego?! Kolejna odpowiedź będzie nieco dłuższa ale podobnie prosta - większość zmian wprowadzanych przez `'use strict'` zostaje automatycznie zaimplementowana podczas używania standardów wprowadzonych w aktualizacji ES6 takich jak chociażby deklarowanie zmienny przy użyciu `let` i `const` zamiast `var` czy używania funkcji strzałkowych. Dodatkowo używanie modułów domyśnie wprowadza w ich zakresie działania zasady `'use strict'`. Podobnie sprawa wygląda w przypadku klas.
+
+No dobra ale dopisałem do wielkiego **NIE**, że to zależy. W rzeczywistości rzeczywiście może to zależeć choćby od tego z jakim kodem mamy do czynienia. W naszej pracy nie rzadko wpadamy w legacy kod napisany przez kogoś z środkowej azji 10 lat temu. Wtedy użycie `'use strict'` w konkretnych pomniejszych obszarach kodu może nam pomóc szybko wyłapać patologie w kolorowych literkach i szybko je załatać.
+
+Tak to już jest z naszym kochanym JS'em nie ma tutaj jasnych i prostych odpowiedzi czy czegoś używać czy też nie. Jak zwykle wszystko zależy i jak zwykle kluczem do dobrych decyzji jest wiedzy czym różnia się dane podejścia.
+
 ## Funkcje strzałkowe
 
-'use strict' nie rozwiązuje jednak naszego problemu. Celem naszej funkcji jest zwrócenie tesktu "Adam ma 20 lat.", a nie rzucenie błędem mówiącym nam że nie umiemy w kolorowe literki. Ostatecznym rozwiązaniem tego problemu są funkcje strzałkowe wprowadzone w wersji ES6. W opisie funkcji strzałkowej możemy przeczytać:
+No dobra wracając do naszego `this` - `'use strict'` nie rozwiązuje do końca naszego problemu. Celem naszej funkcji jest zwrócenie tesktu "Adam ma 20 lat.", a nie rzucenie błędem mówiącym nam, że nie umiemy w kolorowe literki. Ostatecznym rozwiązaniem tego problemu są funkcje strzałkowe wprowadzone w wersji ES6. W opisie funkcji strzałkowej możemy przeczytać:
 
 ```
 - brak własnego obiektu this -> zawsze jest to referencja do nadrzędnego `this`
@@ -423,4 +544,8 @@ console.log(archer) // [...] health: 80, [...]
 
 # Asynchroniczność
 
+# Moduły i pakiety
+
 # Obsługa błędów
+
+# Źródła
